@@ -30,10 +30,13 @@ function operate(operator, first, second){
 }
 
 let operator;
-let firstNumber;
-let secondNumber;
+let firstNumber = 0;
+let secondNumber = 0;
 let value;
 let value2;
+let value3;
+
+let stringOperation = 0;
 
 let display = document.getElementById("lug");
 let AC = document.getElementById("delete");
@@ -46,15 +49,19 @@ AC.addEventListener("click", function() {
     value2 = 0
     operator = "";
     firstNumber = 0;
-    secondNUmber=0;
+    secondNumber=0;
     display.innerText = "";
+    stringOperation = 0;
 })
 
 equals.addEventListener("click", function() {
-    secondNumber = display.innerText;
+    secondNumber = parseInt(display.innerText);
     value2= operate(operator, firstNumber, secondNumber);
+    console.log(value2);
+    value2= value2.toFixed(2);
     display.innerText= value2;
-    firstNUmber = value2;
+    secondNumber = value2;
+    stringOperation = 0;
 })
 
 for(let i=0; i< numbers.length; i++) {
@@ -69,11 +76,32 @@ for(let i=0; i< numbers.length; i++) {
     })
 }
 
+//stores the first number and the operator.
 for(let i=0; i < specialCharacters.length; i++) {
-    specialCharacters[i].addEventListener("click", function() {
-        operator=(specialCharacters[i].innerText);
-        firstNumber = display.innerText;
-        display.innerText = "";
+    specialCharacters[i].addEventListener("focus", function() {
+        if (stringOperation > 0){
+            secondNumber = parseInt(display.innerText);
+            console.log(firstNumber + "firstNumber");
+            console.log(secondNumber);
+            console.log(operator);
+            value2= operate(operator, firstNumber, secondNumber);
+            console.log(value2);
+            value2= value2.toFixed(2);
+            display.innerText= value2;
+            secondNumber = parseInt(value2);
+        } else {
+            secondNumber= operate(operator, firstNumber, secondNumber);
+            operator=(specialCharacters[i].innerText);
+            firstNumber = parseInt(display.innerText);
+            display.innerText = "";
+            stringOperation = 0;
+        }       
+    })
+}
+
+for(let i=0; i < specialCharacters.length; i++) {
+    specialCharacters[i].addEventListener("blur", function() {
+        display.innerText="";
     })
 }
 
